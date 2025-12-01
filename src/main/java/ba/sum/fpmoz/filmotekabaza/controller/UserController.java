@@ -4,6 +4,7 @@ import ba.sum.fpmoz.filmotekabaza.models.User;
 import ba.sum.fpmoz.filmotekabaza.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -13,8 +14,13 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @PostMapping("/user/create")
     public User createUser(@RequestBody User user){
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

@@ -24,11 +24,12 @@ public class User {
     @Column
     private String password;
 
-    public User(int id, String name, String lastname, String email) {
+    public User(int id, String name, String lastname, String email, String password) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+        this.password = password;
     }
 
     public User() {}

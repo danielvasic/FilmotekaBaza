@@ -24,8 +24,7 @@ public class SecurityConfig {
                         auth -> auth.requestMatchers("/user/create", "/auth/login").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.disable())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        ;
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 

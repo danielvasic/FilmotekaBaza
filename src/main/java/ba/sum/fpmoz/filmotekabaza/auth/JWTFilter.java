@@ -36,6 +36,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
                 Authentication authentication = new UsernamePasswordAuthenticationToken(claims.getSubject(), null, new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+
                 request.setAttribute("claims", claims);
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

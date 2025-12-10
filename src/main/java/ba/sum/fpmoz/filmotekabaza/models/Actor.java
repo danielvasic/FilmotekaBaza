@@ -10,17 +10,19 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories", schema = "filmoteka")
-public class Category {
+@Table(name = "actors", schema = "filmoteka")
+public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
+    @Column(name = "last_name")
+    private String lastName;
+
+    @ManyToMany
     private Set<Movie> movies = new LinkedHashSet<>();
 }

@@ -1,6 +1,11 @@
 package ba.sum.fpmoz.filmotekabaza.controller;
 
+import ba.sum.fpmoz.filmotekabaza.models.Actor;
+import ba.sum.fpmoz.filmotekabaza.models.ActorMovie;
+import ba.sum.fpmoz.filmotekabaza.models.ActorMovieId;
 import ba.sum.fpmoz.filmotekabaza.models.Movie;
+import ba.sum.fpmoz.filmotekabaza.repositories.ActorMovieRepository;
+import ba.sum.fpmoz.filmotekabaza.repositories.ActorRepository;
 import ba.sum.fpmoz.filmotekabaza.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +18,10 @@ import java.util.Optional;
 class MovieController {
     @Autowired
     MovieRepository movieRepository;
+    @Autowired
+    private ActorRepository actorRepository;
+    @Autowired
+    private ActorMovieRepository actorMovieRepository;
 
     @PostMapping
     public Movie createMovie(@RequestBody Movie movie) {
@@ -23,6 +32,25 @@ class MovieController {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
+
+    @PostMapping("/movies/{movieId}/actors/{actorId}")
+    public void addActorToMovie(@PathVariable Integer movieId, @PathVariable Integer actorId) {
+
+        Actor actor = actorRepository.findById(actorId).orElseThrow();
+        Movie movie = movieRepository.findById(movieId).orElseThrow();
+
+        ActorMovie link = new ActorMovie();
+        ActorMovieId id = new ActorMovieId();
+        id.setActorId(actorId);
+        id.setMovieId(movieId);
+
+        link.setId(id);
+        link.setActor(actor);
+        link.setMovie(movie);
+
+        actorMovieRepository.save(link);
+    }
+
 
     @GetMapping("/{id}")
     public Movie getMovieById(@PathVariable Integer id) {

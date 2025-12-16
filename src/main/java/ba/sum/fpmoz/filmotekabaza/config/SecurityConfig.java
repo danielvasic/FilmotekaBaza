@@ -21,7 +21,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/user/create", "/auth/login").permitAll()
+                        auth -> auth
+                                .requestMatchers("/auth/**", "/user/create").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers("/movies/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers("/categories/**").hasAnyRole("USER", "ADMIN")
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.disable())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

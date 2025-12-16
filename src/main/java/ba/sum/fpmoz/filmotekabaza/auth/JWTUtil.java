@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class JWTUtil {
@@ -26,12 +28,17 @@ public class JWTUtil {
         );
     }
 
-    public String generateToken(String username) {
+    public String generateRefreshToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    public String generateToken(String username, List<String> roles) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .subject(username)
+                .claim("roles", roles)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(getSigningKey())

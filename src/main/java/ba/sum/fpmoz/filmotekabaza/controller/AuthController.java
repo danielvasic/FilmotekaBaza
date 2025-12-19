@@ -1,10 +1,11 @@
 package ba.sum.fpmoz.filmotekabaza.controller;
 
 import ba.sum.fpmoz.filmotekabaza.auth.JWTUtil;
+import ba.sum.fpmoz.filmotekabaza.models.Role;
 import ba.sum.fpmoz.filmotekabaza.models.User;
+import ba.sum.fpmoz.filmotekabaza.repositories.RoleRepository;
 import ba.sum.fpmoz.filmotekabaza.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,17 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @PostMapping("/register")
+    public User createUser(@RequestBody User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleRepository.findByName("ROLE_USER");
+        user.getRoles().add(role);
+        return userRepository.save(user);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestParam String email, @RequestParam String password) {
         // tražimo korisnika po email adresi
@@ -45,6 +57,7 @@ public class AuthController {
             String refreshToken = jwtUtil.generateRefreshToken();
             user.setRefreshToken(refreshToken);
             userRepository.save(user);
+
             // ako je lozinka ispravna, generiramo token
             return ResponseEntity.ok(
                     Map.of("accessToken", accessToken,

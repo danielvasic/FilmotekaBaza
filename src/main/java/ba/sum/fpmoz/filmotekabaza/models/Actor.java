@@ -25,11 +25,10 @@ public class Actor {
     private String lastName;
 
     @ManyToMany
-    @JsonIgnore
     @JoinTable(
             name = "actor_movie",
             joinColumns = @JoinColumn(name = "actor_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id")
     )
-    private Set<Movie> movies = new LinkedHashSet<>();
+    private Set<Movie> movies;
 }

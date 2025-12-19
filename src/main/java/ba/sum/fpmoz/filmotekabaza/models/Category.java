@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -20,7 +19,6 @@ public class Category {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    private Set<Movie> movies = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Movie> movies;
 }

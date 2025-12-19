@@ -33,7 +33,7 @@ class MovieController {
         return movieRepository.findAll();
     }
 
-    @PostMapping("/movies/{movieId}/actors/{actorId}")
+    @PostMapping("/{movieId}/actors/{actorId}")
     public void addActorToMovie(@PathVariable Integer movieId, @PathVariable Integer actorId) {
 
         Actor actor = actorRepository.findById(actorId).orElseThrow();

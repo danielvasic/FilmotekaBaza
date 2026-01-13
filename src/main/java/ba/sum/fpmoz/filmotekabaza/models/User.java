@@ -1,5 +1,6 @@
 package ba.sum.fpmoz.filmotekabaza.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -8,22 +9,28 @@ import java.util.Set;
 @Entity
 public class User {
 
+    @Schema(hidden = true)
     @Id
     @GeneratedValue
     private int id;
 
+    @Schema(example = "Ime korisnika")
     @Column
     private String name;
 
+    @Schema(example = "Prezime korisnika")
     @Column
     private String lastname;
 
+    @Schema(example = "user@example.com")
     @Column
     private String email;
 
+    @Schema(example = "lozinka123")
     @Column
     private String password;
 
+    @Schema(hidden = true)
     @Column
     private String refreshToken;
 

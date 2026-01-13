@@ -3,6 +3,13 @@ package ba.sum.fpmoz.filmotekabaza.controller;
 import ba.sum.fpmoz.filmotekabaza.models.User;
 import ba.sum.fpmoz.filmotekabaza.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "User management", description = "APIs for managing users")
 public class UserController {
     @Autowired
     UserRepository userRepository;
@@ -18,6 +26,15 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Operation(summary = "Create a new user", description = "Add a new user to the system", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User created successfully",
+                    content = @Content(schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request data",
+                    content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "403", description = "Unauthorized. Access is denied",
+                    content = @Content(schema = @Schema()))
+    })
     @PostMapping("/user/create")
     public User createUser(@RequestBody User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));

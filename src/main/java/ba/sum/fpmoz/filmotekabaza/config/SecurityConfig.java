@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 .requestMatchers("/categories/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers("/actors/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.disable())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

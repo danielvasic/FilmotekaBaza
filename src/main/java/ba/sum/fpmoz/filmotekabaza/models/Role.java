@@ -1,6 +1,7 @@
 package ba.sum.fpmoz.filmotekabaza.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -8,10 +9,13 @@ import java.util.Set;
 @Entity
 @Table(name="roles")
 public class Role {
+
+    @Schema(example = "1", description = "1=USER, 2=ADMIN")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Schema(hidden = true)
     @Column(name="name")
     private String name;
 
